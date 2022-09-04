@@ -4,7 +4,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/graymeta/env"
+	"github.com/jasonhancock/go-env"
 	"github.com/jasonhancock/go-logger"
 	"github.com/spf13/cobra"
 )
@@ -23,14 +23,14 @@ func NewConfig(cmd *cobra.Command) *Config {
 	cmd.Flags().StringVar(
 		&c.Level,
 		"log-level",
-		env.GetenvWithDefault("LOG_LEVEL", "info"),
+		env.String("LOG_LEVEL", "info"),
 		"Log level (all|err|warn|info|debug",
 	)
 
 	return c
 }
 
-// Logger gets the logger
+// Logger gets the logger.
 func (cfg *Config) Logger(w io.Writer, keyvals ...interface{}) *logger.L {
 	return logger.New(w, cfg.name, cfg.Level, keyvals...)
 }
