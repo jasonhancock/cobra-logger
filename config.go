@@ -10,8 +10,9 @@ import (
 )
 
 type Config struct {
-	Level string
-	name  string
+	Level  string
+	Format string
+	name   string
 }
 
 func NewConfig(cmd *cobra.Command) *Config {
@@ -27,10 +28,17 @@ func NewConfig(cmd *cobra.Command) *Config {
 		"Log level (all|err|warn|info|debug",
 	)
 
+	cmd.Flags().StringVar(
+		&c.Format,
+		"log-format",
+		env.String("LOG_FORMAT", "logfmt"),
+		"The format of log messages. (logfmt|json)",
+	)
+
 	return c
 }
 
 // Logger gets the logger.
 func (cfg *Config) Logger(w io.Writer, keyvals ...interface{}) *logger.L {
-	return logger.New(w, cfg.name, cfg.Level, keyvals...)
+	return logger.New(w, cfg.name, cfg.Level, cfg.Format, keyvals...)
 }
