@@ -40,5 +40,11 @@ func NewConfig(cmd *cobra.Command) *Config {
 
 // Logger gets the logger.
 func (cfg *Config) Logger(w io.Writer, keyvals ...interface{}) *logger.L {
-	return logger.New(w, cfg.name, cfg.Level, cfg.Format, keyvals...)
+	return logger.New(
+		logger.WithDestination(w),
+		logger.With(keyvals...),
+		logger.WithFormat(cfg.Format),
+		logger.WithLevel(cfg.Level),
+		logger.WithName(cfg.name),
+	)
 }
