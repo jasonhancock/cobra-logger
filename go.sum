@@ -13,6 +13,8 @@ github.com/jasonhancock/go-env v0.0.3 h1:Fimz0wUogkc/FstqevOAY+RdUiRQDeEzoexy/ed
 github.com/jasonhancock/go-env v0.0.3/go.mod h1:5tS38RxYzmesLfb0J7tUbOHP4KYSmXxn0vA0rPsYmYg=
 github.com/jasonhancock/go-logger v0.0.3 h1:QNlbcP8Q6ltKbaqYnHdPn40I9YZRHY6LOOEWV1nttDY=
 github.com/jasonhancock/go-logger v0.0.3/go.mod h1:0/7gOHEGqqVGABLmJk8HkGGYJqU4Lx1s33+sVG794RA=
+github.com/jasonhancock/go-logger v0.0.4 h1:88n/db4PF9yrFRQe0+O9t3Lr20KC71Yizta/T6JlOfg=
+github.com/jasonhancock/go-logger v0.0.4/go.mod h1:0/7gOHEGqqVGABLmJk8HkGGYJqU4Lx1s33+sVG794RA=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
