@@ -5,8 +5,10 @@ import (
 	"strings"
 
 	"github.com/jasonhancock/go-env"
+	"github.com/jasonhancock/go-helpers"
 	"github.com/jasonhancock/go-logger"
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
 type Config struct {
@@ -16,26 +18,29 @@ type Config struct {
 }
 
 func NewConfig(cmd *cobra.Command) *Config {
-	pieces := strings.Fields(cmd.Use)
-	c := &Config{
-		name: pieces[0],
-	}
+	return NewConfigPflags(strings.Fields(cmd.Use)[0], cmd.Flags())
+}
 
-	cmd.Flags().StringVar(
+func NewConfigPflags(appName string, flags *pflag.FlagSet) *Config {
+	c := Config{name: appName}
+
+	const envLogLevel = "LOG_LEVEL"
+	flags.StringVar(
 		&c.Level,
 		"log-level",
-		env.String("LOG_LEVEL", "info"),
-		"Log level (all|err|warn|info|debug",
+		env.String(envLogLevel, "info"),
+		helpers.EnvDesc("Log level (all|err|warn|info|debug).", envLogLevel),
 	)
 
-	cmd.Flags().StringVar(
+	const envLogFormat = "LOG_FORMAT"
+	flags.StringVar(
 		&c.Format,
 		"log-format",
-		env.String("LOG_FORMAT", "logfmt"),
-		"The format of log messages. (logfmt|json)",
+		env.String(envLogFormat, logger.FormatLogFmt),
+		helpers.EnvDesc("The format of log messages ("+strings.Join(logger.AvailableFormats, "|")+").", envLogFormat),
 	)
 
-	return c
+	return &c
 }
 
 // Logger gets the logger.
