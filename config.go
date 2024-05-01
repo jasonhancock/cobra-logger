@@ -14,7 +14,7 @@ import (
 type Config struct {
 	Level  string
 	Format string
-	name   string
+	Name   string
 }
 
 func NewConfig(cmd *cobra.Command) *Config {
@@ -22,7 +22,7 @@ func NewConfig(cmd *cobra.Command) *Config {
 }
 
 func NewConfigPflags(appName string, flags *pflag.FlagSet) *Config {
-	c := Config{name: appName}
+	c := Config{Name: appName}
 
 	const envLogLevel = "LOG_LEVEL"
 	flags.StringVar(
@@ -50,6 +50,6 @@ func (cfg *Config) Logger(w io.Writer, keyvals ...interface{}) *logger.L {
 		logger.With(keyvals...),
 		logger.WithFormat(cfg.Format),
 		logger.WithLevel(cfg.Level),
-		logger.WithName(cfg.name),
+		logger.WithName(cfg.Name),
 	)
 }
