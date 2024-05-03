@@ -53,3 +53,19 @@ func (cfg *Config) Logger(w io.Writer, keyvals ...interface{}) *logger.L {
 		logger.WithName(cfg.Name),
 	)
 }
+
+// GetLoggerName traverses cobra commands and builds a period delimited string
+// useful for setting the logger name.
+func GetLoggerName(cmd *cobra.Command) string {
+	return strings.Join(getCmdPath(cmd), ".")
+}
+
+func getCmdPath(cmd *cobra.Command) []string {
+	name := strings.Fields(cmd.Use)[0]
+	result := []string{name}
+	if cmd.HasParent() {
+		result = append(getCmdPath(cmd.Parent()), name)
+	}
+
+	return result
+}
