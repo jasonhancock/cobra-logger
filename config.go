@@ -51,6 +51,7 @@ func (cfg *Config) Logger(w io.Writer, keyvals ...interface{}) *logger.L {
 		logger.WithFormat(cfg.Format),
 		logger.WithLevel(cfg.Level),
 		logger.WithName(cfg.Name),
+		logger.WithAutoCallerPrefixTrim(),
 	)
 }
 
