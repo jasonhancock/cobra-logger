@@ -1,7 +1,9 @@
 package logger
 
 import (
+	"encoding/json"
 	"io"
+	"net/http"
 	"strings"
 
 	"github.com/jasonhancock/go-env"
@@ -15,6 +17,9 @@ type Config struct {
 	Level  string
 	Format string
 	Name   string
+
+	logger     *logger.L
+	logLeveler LevelSetter
 }
 
 func NewConfig(cmd *cobra.Command) *Config {
@@ -45,14 +50,20 @@ func NewConfigPflags(appName string, flags *pflag.FlagSet) *Config {
 
 // Logger gets the logger.
 func (cfg *Config) Logger(w io.Writer, keyvals ...interface{}) *logger.L {
-	return logger.New(
-		logger.WithDestination(w),
-		logger.With(keyvals...),
-		logger.WithFormat(cfg.Format),
-		logger.WithLevel(cfg.Level),
-		logger.WithName(cfg.Name),
-		logger.WithAutoCallerPrefixTrim(),
-	)
+	if cfg.logger == nil {
+		logLeveler := logger.NewDynamicLeveler(cfg.Level)
+		cfg.logLeveler = logLeveler
+		cfg.logger = logger.New(
+			logger.WithDestination(w),
+			logger.With(keyvals...),
+			logger.WithFormat(cfg.Format),
+			logger.WithName(cfg.Name),
+			logger.WithAutoCallerPrefixTrim(),
+			logger.WithLeveler(logLeveler),
+		)
+	}
+
+	return cfg.logger
 }
 
 // GetLoggerName traverses cobra commands and builds a period delimited string
@@ -69,4 +80,23 @@ func getCmdPath(cmd *cobra.Command) []string {
 	}
 
 	return result
+}
+
+type LevelSetter interface {
+	SetLevel(level string)
+}
+
+type LogLevelChangeRequest struct {
+	Level string `json:"level"`
+}
+
+func (cfg *Config) LogLevelHandler(w http.ResponseWriter, r *http.Request) {
+	var req LogLevelChangeRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	cfg.logLeveler.SetLevel(req.Level)
+	w.WriteHeader(http.StatusNoContent)
 }
