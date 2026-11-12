@@ -6,10 +6,10 @@ toolchain go1.21.0
 
 require (
 	github.com/jasonhancock/go-env v0.0.6
-	github.com/jasonhancock/go-helpers v0.0.9
-	github.com/jasonhancock/go-logger v0.0.8
-	github.com/spf13/cobra v1.9.1
-	github.com/spf13/pflag v1.0.6
+	github.com/jasonhancock/go-helpers v0.0.11
+	github.com/jasonhancock/go-logger v0.0.10
+	github.com/spf13/cobra v1.10.2
+	github.com/spf13/pflag v1.1.0
 )
 
 require (
